@@ -1,10 +1,10 @@
 package settingstore
 
 import (
+	"github.com/dracory/dataobject"
+	"github.com/dracory/sb"
+	"github.com/dracory/uid"
 	"github.com/dromara/carbon/v2"
-	"github.com/gouniverse/dataobject"
-	"github.com/gouniverse/sb"
-	"github.com/gouniverse/uid"
 )
 
 var _ SettingInterface = (*Setting)(nil)

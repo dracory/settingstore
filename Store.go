@@ -15,9 +15,9 @@ import (
 	_ "github.com/doug-martin/goqu/v9/dialect/postgres"  // importing postgres dialect
 	_ "github.com/doug-martin/goqu/v9/dialect/sqlite3"   // importing sqlite3 dialect
 	_ "github.com/doug-martin/goqu/v9/dialect/sqlserver" // importing sqlserver dialect
+	"github.com/dracory/database"
+	"github.com/dracory/sb"
 	"github.com/dromara/carbon/v2"
-	"github.com/gouniverse/base/database"
-	"github.com/gouniverse/sb"
 	"github.com/samber/lo"
 )
 
