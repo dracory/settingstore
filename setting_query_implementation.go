@@ -22,31 +22,31 @@ type settingQueryImplementation struct {
 
 func (q *settingQueryImplementation) Validate() error {
 	if q.HasCreatedAtGte() && q.CreatedAtGte() == "" {
-		return errors.New("Setting query. created_at_gte cannot be empty")
+		return errors.New("setting query. created_at_gte cannot be empty")
 	}
 
 	if q.HasCreatedAtLte() && q.CreatedAtLte() == "" {
-		return errors.New("Setting query. created_at_lte cannot be empty")
+		return errors.New("setting query. created_at_lte cannot be empty")
 	}
 
 	if q.HasID() && q.ID() == "" {
-		return errors.New("Setting query. id cannot be empty")
+		return errors.New("setting query. id cannot be empty")
 	}
 
 	if q.HasIDIn() && len(q.IDIn()) < 1 {
-		return errors.New("Setting query. id_in cannot be empty array")
+		return errors.New("setting query. id_in cannot be empty array")
 	}
 
 	if q.HasKey() && q.Key() == "" {
-		return errors.New("Setting query. key cannot be empty")
+		return errors.New("setting query. key cannot be empty")
 	}
 
 	if q.HasLimit() && q.Limit() < 0 {
-		return errors.New("Setting query. limit cannot be negative")
+		return errors.New("setting query. limit cannot be negative")
 	}
 
 	if q.HasOffset() && q.Offset() < 0 {
-		return errors.New("Setting query. offset cannot be negative")
+		return errors.New("setting query. offset cannot be negative")
 	}
 
 	return nil

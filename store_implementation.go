@@ -32,7 +32,6 @@ type storeImplementation struct {
 	settingTableName   string
 	db                 *sql.DB
 	dbDriverName       string
-	timeoutSeconds     int64
 	automigrateEnabled bool
 	debugEnabled       bool
 	sqlLogger          *slog.Logger
