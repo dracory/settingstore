@@ -20,8 +20,8 @@ type NewStoreOptions struct {
 }
 
 // NewStore creates a new setting store
-func NewStore(opts NewStoreOptions) (*store, error) {
-	store := &store{
+func NewStore(opts NewStoreOptions) (StoreInterface, error) {
+	store := &storeImplementation{
 		settingTableName:   opts.SettingTableName,
 		automigrateEnabled: opts.AutomigrateEnabled,
 		db:                 opts.DB,

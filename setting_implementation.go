@@ -7,10 +7,10 @@ import (
 	"github.com/dromara/carbon/v2"
 )
 
-var _ SettingInterface = (*Setting)(nil)
+var _ SettingInterface = (*settingImplementation)(nil)
 
 // Setting type
-type Setting struct {
+type settingImplementation struct {
 	dataobject.DataObject
 }
 
@@ -21,7 +21,7 @@ func NewSetting() SettingInterface {
 	updatedAt := carbon.Now(carbon.UTC).ToDateTimeString(carbon.UTC)
 	deletedAt := sb.MAX_DATETIME
 
-	o := (&Setting{})
+	o := (&settingImplementation{})
 
 	o.SetID(uid.HumanUid()).
 		SetKey("").
@@ -34,81 +34,81 @@ func NewSetting() SettingInterface {
 }
 
 func NewSettingFromExistingData(data map[string]string) SettingInterface {
-	o := &Setting{}
+	o := &settingImplementation{}
 	o.Hydrate(data)
 	return o
 }
 
 // == METHODS =================================================================
 
-func (o *Setting) IsSoftDeleted() bool {
+func (o *settingImplementation) IsSoftDeleted() bool {
 	return o.GetSoftDeletedAtCarbon().Compare("<", carbon.Now(carbon.UTC))
 }
 
 // == SETTERS AND GETTERS =====================================================
 
-func (setting *Setting) GetID() string {
+func (setting *settingImplementation) GetID() string {
 	return setting.Get(COLUMN_ID)
 }
 
-func (setting *Setting) SetID(id string) SettingInterface {
+func (setting *settingImplementation) SetID(id string) SettingInterface {
 	setting.Set(COLUMN_ID, id)
 	return setting
 }
 
-func (setting *Setting) GetKey() string {
+func (setting *settingImplementation) GetKey() string {
 	return setting.Get(COLUMN_SETTING_KEY)
 }
 
-func (setting *Setting) SetKey(key string) SettingInterface {
+func (setting *settingImplementation) SetKey(key string) SettingInterface {
 	setting.Set(COLUMN_SETTING_KEY, key)
 	return setting
 }
 
-func (setting *Setting) GetValue() string {
+func (setting *settingImplementation) GetValue() string {
 	return setting.Get(COLUMN_SETTING_VALUE)
 }
 
-func (setting *Setting) SetValue(value string) SettingInterface {
+func (setting *settingImplementation) SetValue(value string) SettingInterface {
 	setting.Set(COLUMN_SETTING_VALUE, value)
 	return setting
 }
 
-func (setting *Setting) GetCreatedAt() string {
+func (setting *settingImplementation) GetCreatedAt() string {
 	return setting.Get(COLUMN_CREATED_AT)
 }
 
-func (setting *Setting) GetCreatedAtCarbon() *carbon.Carbon {
+func (setting *settingImplementation) GetCreatedAtCarbon() *carbon.Carbon {
 	return carbon.Parse(setting.GetCreatedAt(), carbon.UTC)
 }
 
-func (setting *Setting) SetCreatedAt(createdAt string) SettingInterface {
+func (setting *settingImplementation) SetCreatedAt(createdAt string) SettingInterface {
 	setting.Set(COLUMN_CREATED_AT, createdAt)
 	return setting
 }
 
-func (setting *Setting) GetUpdatedAt() string {
+func (setting *settingImplementation) GetUpdatedAt() string {
 	return setting.Get(COLUMN_UPDATED_AT)
 }
 
-func (setting *Setting) GetUpdatedAtCarbon() *carbon.Carbon {
+func (setting *settingImplementation) GetUpdatedAtCarbon() *carbon.Carbon {
 	return carbon.Parse(setting.GetUpdatedAt(), carbon.UTC)
 }
 
-func (setting *Setting) SetUpdatedAt(updatedAt string) SettingInterface {
+func (setting *settingImplementation) SetUpdatedAt(updatedAt string) SettingInterface {
 	setting.Set(COLUMN_UPDATED_AT, updatedAt)
 	return setting
 }
 
-func (setting *Setting) GetSoftDeletedAt() string {
+func (setting *settingImplementation) GetSoftDeletedAt() string {
 	return setting.Get(COLUMN_SOFT_DELETED_AT)
 }
 
-func (setting *Setting) GetSoftDeletedAtCarbon() *carbon.Carbon {
+func (setting *settingImplementation) GetSoftDeletedAtCarbon() *carbon.Carbon {
 	return carbon.Parse(setting.GetSoftDeletedAt(), carbon.UTC)
 }
 
-func (setting *Setting) SetSoftDeletedAt(deletedAt string) SettingInterface {
+func (setting *settingImplementation) SetSoftDeletedAt(deletedAt string) SettingInterface {
 	setting.Set(COLUMN_SOFT_DELETED_AT, deletedAt)
 	return setting
 }
