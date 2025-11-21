@@ -269,8 +269,7 @@ func (store *storeImplementation) SettingCount(ctx context.Context, options Sett
 		log.Println(sqlStr)
 	}
 
-	db := sb.NewDatabase(store.db, store.dbDriverName)
-	mapped, err := db.SelectToMapString(sqlStr, params...)
+	mapped, err := database.SelectToMapString(database.Context(ctx, store.db), sqlStr, params...)
 	if err != nil {
 		return -1, err
 	}
@@ -465,13 +464,7 @@ func (store *storeImplementation) SettingList(ctx context.Context, query Setting
 		return []SettingInterface{}, errors.New("settingstore: database is nil")
 	}
 
-	db := sb.NewDatabase(store.db, store.dbDriverName)
-
-	if db == nil {
-		return []SettingInterface{}, errors.New("settingstore: database is nil")
-	}
-
-	modelMaps, err := db.SelectToMapString(sqlStr, sqlParams...)
+	modelMaps, err := database.SelectToMapString(database.Context(ctx, store.db), sqlStr, sqlParams...)
 
 	if err != nil {
 		return []SettingInterface{}, err
