@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"log/slog"
 	"strconv"
@@ -47,7 +48,10 @@ type storeImplementation struct {
 // Returns:
 // - error - nil if no error, error otherwise
 func (store *storeImplementation) AutoMigrate(ctx context.Context) error {
-	sqlStr := store.SQLCreateTable()
+	sqlStr, err := store.SQLCreateTable()
+	if err != nil {
+		return fmt.Errorf("setting store: failed to generate create table sql: %w", err)
+	}
 
 	if sqlStr == "" {
 		return errors.New("setting store: table create sql is empty")
@@ -57,7 +61,7 @@ func (store *storeImplementation) AutoMigrate(ctx context.Context) error {
 		return errors.New("setting store: database is nil")
 	}
 
-	_, err := database.Execute(database.Context(ctx, store.db), sqlStr)
+	_, err = database.Execute(database.Context(ctx, store.db), sqlStr)
 
 	if err != nil {
 		return err
