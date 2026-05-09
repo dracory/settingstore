@@ -112,3 +112,7 @@ func (setting *settingImplementation) SetSoftDeletedAt(deletedAt string) Setting
 	setting.Set(COLUMN_SOFT_DELETED_AT, deletedAt)
 	return setting
 }
+
+func (setting *settingImplementation) MarkAsNotDirty() {
+	setting.DataObject.MarkAsNotDirty()
+}
