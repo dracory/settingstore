@@ -413,10 +413,6 @@ func TestStore_SettingFindByKey(t *testing.T) {
 		SetKey("1").
 		SetValue("one two three four")
 
-	if err != nil {
-		t.Fatal("unexpected error:", err)
-	}
-
 	if setting == nil {
 		t.Fatal("unexpected nil setting")
 	}
@@ -565,10 +561,6 @@ func TestStore_SettingUpdate(t *testing.T) {
 	}
 
 	setting.SetValue("one two three")
-
-	if err != nil {
-		t.Fatal("unexpected error:", err)
-	}
 
 	err = store.SettingUpdate(context.Background(), setting)
 

@@ -7,7 +7,7 @@ type SettingInterface interface {
 
 	Data() map[string]string
 	DataChanged() map[string]string
-	MarkAsNotDirty()
+	MarkAsNotDirty(...string)
 
 	// Methods
 
