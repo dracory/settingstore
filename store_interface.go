@@ -2,18 +2,30 @@ package settingstore
 
 import (
 	"context"
+	"database/sql"
 )
 
 // StoreInterface defines the interface for a setting store.
 type StoreInterface interface {
-	// AutoMigrate creates the settings table if it does not exist
+	// MigrateDown drops the settings table
 	//
 	// Parameters:
 	// - ctx: the context
+	// - tx: optional transaction
 	//
 	// Returns:
 	// - error - nil if no error, error otherwise
-	AutoMigrate(ctx context.Context) error
+	MigrateDown(ctx context.Context, tx ...*sql.Tx) error
+
+	// MigrateUp creates the settings table if it does not exist
+	//
+	// Parameters:
+	// - ctx: the context
+	// - tx: optional transaction
+	//
+	// Returns:
+	// - error - nil if no error, error otherwise
+	MigrateUp(ctx context.Context, tx ...*sql.Tx) error
 
 	// EnableDebug - enables the debug option
 	//

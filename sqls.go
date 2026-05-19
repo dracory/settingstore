@@ -39,3 +39,14 @@ func (store *storeImplementation) SQLCreateTable() (string, error) {
 
 	return sql, err
 }
+
+// SQLDropTable returns a SQL string for dropping the settings table
+func (store *storeImplementation) SQLDropTable() (string, error) {
+	sql, err := sb.NewBuilder(store.dbDriverName).
+		Table(store.settingTableName).
+		Drop()
+	if err != nil {
+		return "", err
+	}
+	return sql, nil
+}

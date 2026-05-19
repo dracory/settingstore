@@ -42,12 +42,20 @@ type storeImplementation struct {
 
 // AutoMigrate creates the settings table if it does not exist
 //
+// # MigrateUp creates the settings table if it does not exist
+//
 // Parameters:
 // - ctx: the context
+// - tx: optional transaction
 //
 // Returns:
 // - error - nil if no error, error otherwise
-func (store *storeImplementation) AutoMigrate(ctx context.Context) error {
+func (store *storeImplementation) MigrateUp(ctx context.Context, tx ...*sql.Tx) error {
+	var txToUse *sql.Tx
+	if len(tx) > 0 {
+		txToUse = tx[0]
+	}
+
 	sqlStr, err := store.SQLCreateTable()
 	if err != nil {
 		return fmt.Errorf("setting store: failed to generate create table sql: %w", err)
@@ -61,10 +69,52 @@ func (store *storeImplementation) AutoMigrate(ctx context.Context) error {
 		return errors.New("setting store: database is nil")
 	}
 
-	_, err = database.Execute(database.Context(ctx, store.db), sqlStr)
+	var errExec error
+	if txToUse != nil {
+		_, errExec = txToUse.ExecContext(ctx, sqlStr)
+	} else {
+		_, errExec = database.Execute(database.Context(ctx, store.db), sqlStr)
+	}
 
+	if errExec != nil {
+		return errExec
+	}
+
+	return nil
+}
+
+// MigrateDown drops the settings table
+//
+// Parameters:
+// - ctx: the context
+// - tx: optional transaction
+//
+// Returns:
+// - error - nil if no error, error otherwise
+func (store *storeImplementation) MigrateDown(ctx context.Context, tx ...*sql.Tx) error {
+	var txToUse *sql.Tx
+	if len(tx) > 0 {
+		txToUse = tx[0]
+	}
+
+	sqlStr, err := store.SQLDropTable()
 	if err != nil {
 		return err
+	}
+
+	if store.db == nil {
+		return errors.New("setting store: database is nil")
+	}
+
+	var errExec error
+	if txToUse != nil {
+		_, errExec = txToUse.ExecContext(ctx, sqlStr)
+	} else {
+		_, errExec = database.Execute(database.Context(ctx, store.db), sqlStr)
+	}
+
+	if errExec != nil {
+		return errExec
 	}
 
 	return nil
