@@ -484,7 +484,8 @@ func (store *storeImplementation) SettingUpdate(ctx context.Context, setting Set
 
 // buildQuery builds a neat query from the setting query interface.
 func (store *storeImplementation) buildQuery(query SettingQueryInterface) contractsorm.Query {
-	q := store.db.Query()
+	// Use Model() to enable neat's automatic soft delete handling via SoftDeletesMaxDate
+	q := store.db.Query().Model(&settingImplementation{})
 
 	if query == nil {
 		return q
@@ -522,12 +523,9 @@ func (store *storeImplementation) buildQuery(query SettingQueryInterface) contra
 		q = q.OrderBy(query.OrderBy(), sortOrder)
 	}
 
-	// Handle soft delete filtering
+	// Handle soft delete filtering via neat's automatic handling (SoftDeletesMaxDate)
 	if query.HasSoftDeletedIncluded() && query.SoftDeletedIncluded() {
 		q = q.WithSoftDeleted()
-	} else {
-		// By default, filter out soft-deleted records
-		q = q.Where(COLUMN_SOFT_DELETED_AT+" = ?", carbon.Parse(MAX_DATETIME, carbon.UTC).StdTime())
 	}
 
 	return q
