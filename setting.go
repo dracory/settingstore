@@ -3,8 +3,8 @@ package settingstore
 import (
 	"github.com/dracory/neat/database/orm"
 	"github.com/dracory/neat/database/soft_delete"
-	neatuid "github.com/dracory/neat/support/uid"
 	"github.com/dromara/carbon/v2"
+	"github.com/google/uuid"
 )
 
 // SettingInterface defines the interface for a setting record.
@@ -42,7 +42,7 @@ var _ SettingInterface = (*settingImplementation)(nil)
 // == TYPE =====================================================================
 
 type settingImplementation struct {
-	orm.ShortID
+	orm.StringID
 
 	KeyField   string `db:"setting_key"`
 	ValueField string `db:"setting_value"`
@@ -56,7 +56,8 @@ type settingImplementation struct {
 
 func NewSetting() SettingInterface {
 	o := &settingImplementation{}
-	o.SetID(neatuid.GenerateShortID())
+	id, _ := uuid.NewV7()
+	o.SetID(id.String())
 	o.SetKey("")
 	o.SetValue("")
 	o.SetCreatedAt(carbon.Now(carbon.UTC).ToDateTimeString(carbon.UTC))
@@ -91,11 +92,11 @@ func (o *settingImplementation) IsSoftDeleted() bool {
 // == SETTERS AND GETTERS ======================================================
 
 func (o *settingImplementation) GetID() string {
-	return o.ShortID.ID
+	return o.StringID.ID
 }
 
 func (o *settingImplementation) SetID(id string) SettingInterface {
-	o.ShortID.ID = id
+	o.StringID.ID = id
 	return o
 }
 

@@ -1,6 +1,10 @@
 package settingstore
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/google/uuid"
+)
 
 func TestNewSetting_Defaults(t *testing.T) {
 	setting := NewSetting()
@@ -11,8 +15,14 @@ func TestNewSetting_Defaults(t *testing.T) {
 
 	if id := setting.GetID(); id == "" {
 		t.Fatal("expected ID to be generated")
-	} else if len(id) < 8 {
-		t.Fatalf("unexpected ID length: %d", len(id))
+	} else {
+		u, err := uuid.Parse(id)
+		if err != nil {
+			t.Fatalf("expected valid UUID, got %s: %v", id, err)
+		}
+		if u.Version() != 7 {
+			t.Fatalf("expected UUID v7, got version %d", u.Version())
+		}
 	}
 
 	if key := setting.GetKey(); key != "" {
