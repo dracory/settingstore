@@ -1,10 +1,11 @@
 package settingstore
 
 import (
+	"uuid"
+
 	"github.com/dracory/neat/database/orm"
 	"github.com/dracory/neat/database/soft_delete"
 	"github.com/dromara/carbon/v2"
-	"github.com/google/uuid"
 )
 
 // SettingInterface defines the interface for a setting record.
@@ -56,8 +57,7 @@ type settingImplementation struct {
 
 func NewSetting() SettingInterface {
 	o := &settingImplementation{}
-	id, _ := uuid.NewV7()
-	o.SetID(id.String())
+	o.SetID(uuid.NewV7().String())
 	o.SetKey("")
 	o.SetValue("")
 	o.SetCreatedAt(carbon.Now(carbon.UTC).ToDateTimeString(carbon.UTC))

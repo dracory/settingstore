@@ -2,8 +2,7 @@ package settingstore
 
 import (
 	"testing"
-
-	"github.com/google/uuid"
+	"uuid"
 )
 
 func TestNewSetting_Defaults(t *testing.T) {
@@ -20,8 +19,8 @@ func TestNewSetting_Defaults(t *testing.T) {
 		if err != nil {
 			t.Fatalf("expected valid UUID, got %s: %v", id, err)
 		}
-		if u.Version() != 7 {
-			t.Fatalf("expected UUID v7, got version %d", u.Version())
+		if version := u[6] >> 4; version != 7 {
+			t.Fatalf("expected UUID v7, got version %d", version)
 		}
 	}
 
