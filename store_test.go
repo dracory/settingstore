@@ -71,6 +71,32 @@ func TestStore_Automigrate(t *testing.T) {
 	}
 }
 
+func TestStore_GetSettingTableName(t *testing.T) {
+	store, err := initStore()
+
+	if err != nil {
+		t.Fatal("Store could not be created: ", err.Error())
+	}
+
+	if store.GetSettingTableName() != "setting" {
+		t.Fatalf("expected 'setting', got %s", store.GetSettingTableName())
+	}
+}
+
+func TestStore_SetSettingTableName(t *testing.T) {
+	store, err := initStore()
+
+	if err != nil {
+		t.Fatal("Store could not be created: ", err.Error())
+	}
+
+	store.SetSettingTableName("custom_settings")
+
+	if store.GetSettingTableName() != "custom_settings" {
+		t.Fatalf("expected 'custom_settings', got %s", store.GetSettingTableName())
+	}
+}
+
 func TestStore_EnableDebug(t *testing.T) {
 	store, err := initStore()
 

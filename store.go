@@ -20,6 +20,8 @@ type StoreInterface interface {
 	MigrateDown(ctx context.Context, tx ...*sql.Tx) error
 	MigrateUp(ctx context.Context, tx ...*sql.Tx) error
 	EnableDebug(debug bool)
+	GetSettingTableName() string
+	SetSettingTableName(settingTableName string)
 
 	SettingCount(ctx context.Context, query SettingQueryInterface) (int64, error)
 	SettingCreate(ctx context.Context, setting SettingInterface) error
@@ -117,6 +119,16 @@ func (st *storeImplementation) EnableDebug(debug bool) {
 		st.db.DisableDebug()
 		st.logger = slog.New(slog.NewTextHandler(os.Stdout, nil))
 	}
+}
+
+// GetSettingTableName returns the assigned table name
+func (st *storeImplementation) GetSettingTableName() string {
+	return st.settingTableName
+}
+
+// SetSettingTableName sets the assigned table name
+func (st *storeImplementation) SetSettingTableName(settingTableName string) {
+	st.settingTableName = settingTableName
 }
 
 // Delete is a shortcut method to delete a value by key
